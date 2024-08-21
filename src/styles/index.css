@@ -1,12 +1,71 @@
+* {
+    margin:0 ;
+    padding:0 ;
+}
 
-/* 
+body {
+    width: 100%;
+    height: 100vh;
+    font-family: cursive;
+    background-color: rgb(0, 0, 0);
+}
 
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
+.content{
+    display:flex;
+    justify-content:center;
+    width:100%;
+    flex-direction:column;
+    padding: 10vh 0 6vh 0;
+}
 
-*/
+.music {
+    padding:0.5vw 2vw 0.5vw 2vw ;
+    font-size: 4vh;
+    width:100%;
+    height: 100%;
+    color: rgb(255, 255, 255);
+    border: 0.1vw solid #dee2e6;
+    border-radius: 0%;
+}
+
+
+.music:hover{
+    background-color: rgb(73, 72, 72);
+
+}
+
+.music:focus {
+    background-color: rgb(73, 72, 72);
+}
+
+h1 {
+    background-color: rgb(73, 72, 72);
+    color: rgb(255, 255, 255);
+    font-size: 7vh;
+    display:flex;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    height: 10vh;
+    top:0;
+}
+
+.reproductor {
+    display:flex;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    height: 6vh;
+    bottom:0;
+    background-color: rgb(73, 72, 72);
+}
+
+.fa {
+    color:white;
+    font-size: 5vh;
+    margin: 0 4vw 0 4vw;
+}
+
+.selected {
+    background-color: rgb(73, 72, 72);
+}
