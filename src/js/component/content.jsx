@@ -1,36 +1,42 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useRef} from 'react';
 
 export default function ToDoList () {
   const [allMusics, setAllMusics ] = useState([]);
   const [playing, setPlaying ] = useState(false);
   const [selected, setSelected ] = useState(0);
+  const [urlMusic, setUrlMusic ] = useState("");
+  const audio = useRef(null);
     
-    
+  
   useEffect(() => {
     getMusics();
-  }, [selected]);
+    reproduceMusic();
+  }, [selected,playing]);
 
 
   const playMusic = (id) => {
 
+    if(id>allMusics.length){
+      id=1;
+    } 
+
+    if(id<=0){
+      id=allMusics.length;
+    } 
+
+    audio.current.pause()
     setSelected(id);
-    setPlaying(true);
-    //var musicSelected = document.getElementById("music"+id);
-    //musicSelected.classList.add("selected");
-  }
-
-  const playNextMusic = () => {
-    setSelected(selected+1>allMusics.length?selected+1-allMusics.length:selected+1);
+    setUrlMusic(allMusics[id-1].url);
     setPlaying(true);
   }
 
-  const playPreviousMusic = () => {
-    setSelected(selected-1<=0?allMusics.length:selected-1);
-    setPlaying(true);
-  }
   const playstopMusic = () => {
 
     setPlaying(!playing);
+  }
+
+  const reproduceMusic = () => {
+    playing ? audio.current.play() : audio.current.pause()
   }
   
   const getMusics = () => {
@@ -46,6 +52,7 @@ export default function ToDoList () {
       })
       .then(data => {
           selected==0?setSelected(data.songs[0].id):setSelected(selected);
+          setUrlMusic(data.songs[selected-1].url);
           setAllMusics(data.songs)
       })
       .catch(error => {
@@ -59,18 +66,19 @@ export default function ToDoList () {
         
     <>
       <div className="content mx-auto">
-                {allMusics.map((x) => (
-                      <div key={x.id} className={`justify-content-between d-flex music ${selected==x.id?"selected":""}`} id={`music${x.id}`} onClick={()=>playMusic(x.id)}>
+                {allMusics.map((x,index) => (
+                      <div key={x.id} className={`justify-content-between d-flex music ${selected==x.id?"selected":""}`} onClick={()=>playMusic(x.id)}>
                         <div className='todo'>{x.id} {x.name}</div>
                       </div>
                 ))}
       </div>
     
       <div className="reproductor mx-auto">
-        <i className="fa fa-backward my-auto" onClick={()=>playPreviousMusic()}></i>
+        <i className="fa fa-backward my-auto" onClick={()=>playMusic(selected-1)}></i>
         <i className={`fa fa-${playing?"stop":"play"} my-auto`} onClick={()=>playstopMusic()}></i>
-        <i className="fa fa-forward my-auto" onClick={()=>playNextMusic()}></i>
+        <i className="fa fa-forward my-auto" onClick={()=>playMusic(selected+1)}></i>
       </div>  
+      <audio ref={audio} src={`https://playground.4geeks.com${urlMusic}`} type="audio/mp3" />
     </>
   
   );
